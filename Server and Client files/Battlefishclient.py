@@ -1,21 +1,19 @@
-from socket import *
+import socket
+import sys
 
-def client():
-	s = socket(AF_INET, SOCK_STREAM)
-	s.connect(('localhost', 1250))
-	message = input('Please enter a Player Name: ')
-	s.sendall(message.encode())
-	print(s.recv(1024))
-	while True:
-		message = input("Please type something: ")
-		s.sendall(message.encode())
-		data = s.recv(1024)
-		print(data.decode())
-	# Send and receive data
-		if message == 'quit':
-			break
-			s.close()
-	print('Received: ', data.decode())
-	
+host = 'localhost'
+port = 50000
+size = 1024
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect((host,port))
+sys.stdout.write('%')
 
-client()
+while True:
+    line = sys.stdin.readline()
+    if line == '\n':
+        break
+    s.send(line)
+    data = s.recv(size)
+    sys.stdout.write(data)
+    sys.stdout.write('%')
+s.close()
